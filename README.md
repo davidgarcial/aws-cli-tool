@@ -24,3 +24,14 @@ If the login was successfull you will be redirected to the main menu that shows 
 ![Main Menu](./ss/login/main_menu.png)
 
 If you want more detailed images of the functionality check the folder 'ss'
+
+If you want more detailed images of the functionality check the folder 'ss'
+Here are some examples
+
+![EC2 Menu](./ss/ec2/ec2_list.png)
+
+![EBS Menu](./ss/ebs/ebs_list_volumes.png)
+
+![S3 Menu](./ss/s3/s3_list_objects.png)
+
+![Monito Menu](./ss/monitor/cpu_utilization_credits.png)
