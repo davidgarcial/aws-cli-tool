@@ -25,7 +25,6 @@ If the login was successfull you will be redirected to the main menu that shows 
 
 If you want more detailed images of the functionality check the folder 'ss'
 
-If you want more detailed images of the functionality check the folder 'ss'
 Here are some examples
 
 ![EC2 Menu](./ss/ec2/ec2_list.png)
