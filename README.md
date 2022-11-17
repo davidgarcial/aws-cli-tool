@@ -23,3 +23,4 @@ If you provide empty values the program will exit
 If the login was successfull you will be redirected to the main menu that shows items dependig of your user type
 ![Main Menu](./ss/login/main_menu.png)
 
+If you want more detailed images of the functionality check the folder 'ss'
