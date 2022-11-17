@@ -15,8 +15,8 @@ class AmazonDB():
     def __init__(self):
         self.dynamodb = boto3.resource(
             "dynamodb",
-            aws_access_key_id = "AKIA3PT2Q4JWTKP6KFNH",
-            aws_secret_access_key= "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",
+            aws_access_key_id = "",
+            aws_secret_access_key= "",
             region_name = "us-east-2"
         )
 
