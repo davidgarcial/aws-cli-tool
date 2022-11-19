@@ -1,4 +1,4 @@
-# Cloud Assignment IaaS and Python 
+# Cloud Assignment IaaS (Python & Boto3)
 
 Hi, glad that you are reading this, sorry if its not the fancier code 
 but its my first time in python and i make my best (dont be that hard xd)
