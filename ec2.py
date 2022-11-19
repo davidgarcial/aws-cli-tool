@@ -1,11 +1,10 @@
-from aws_service import AWSService
+from aws_service import getEC2Client, getEC2Resource
 from utils import handleError
 
 class EC2: 
     def __init__(self, user):
-        aws_Service = AWSService()
-        self.ec2_resource = aws_Service.getEC2Resource(user)
-        self.ec2_client = aws_Service.getEC2Client(user)
+        self.ec2_resource = getEC2Resource(user)
+        self.ec2_client = getEC2Client(user)
     
     def printInstance(self, instanceInfo):
         print(f'\t EC2 instance "{instanceInfo["Tags"][0]["Value"]}" information:')
@@ -36,6 +35,9 @@ class EC2:
     def start_stop(self, action):
         instance_id = input("Provide an instance id: ")
         
+        if not instance_id:
+            return
+
         if action == 'ON':
             try:
                 self.ec2_client.start_instances(InstanceIds=[instance_id])
@@ -58,6 +60,12 @@ class EC2:
         self.list_instances()
         instance_id = input("Provide an instance id: ")
         name = input("Provide a name: ")
+
+        if not instance_id:
+            return
+
+        if not name:
+            return
 
         try:
             self.ec2_client.create_image(InstanceId=instance_id, Name=name)

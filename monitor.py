@@ -1,16 +1,15 @@
 from datetime import datetime, timedelta
 from ec2 import EC2
-from aws_service import AWSService
+from aws_service import getCloudWatchClient
 from utils import handleError
 
 class Monitor: 
     def __init__(self, user):
-        aws_Service = AWSService()
         self.user = user
-        self.cloudwatch = aws_Service.getCloudWatchClient(user)
+        self.cloudwatch = getCloudWatchClient(user)
 
     def cpuData(self):
-        print(f'EC2 CPU (last 30 min) information')
+        print('EC2 CPU (last 30 min) information')
 
         EC2(self.user).list_instances()
         instance_id = input("Provide an instance id: ")
@@ -19,10 +18,11 @@ class Monitor:
             return
 
         try:
+            startTime = datetime.utcnow() - timedelta(seconds=1500)
             CPUCreditUsage = self.cloudwatch.get_metric_statistics(
                 Namespace='AWS/EC2',
                 MetricName='CPUUtilization',
-                StartTime= datetime.utcnow() - timedelta(seconds=1500),
+                StartTime= startTime,
                 EndTime= datetime.utcnow(),
                 Statistics=[
                     'Average',
@@ -33,14 +33,14 @@ class Monitor:
                     {
                     'Name': 'InstanceId',
                     'Value': instance_id
-                    },
+                    }
                 ]
             )
 
             CPUUtilization = self.cloudwatch.get_metric_statistics(
                 Namespace='AWS/EC2',
                 MetricName='CPUUtilization',
-                StartTime= datetime.utcnow() - timedelta(seconds=1500),
+                StartTime= startTime,
                 EndTime= datetime.utcnow(),
                 Statistics=[
                     'Average',
@@ -51,12 +51,15 @@ class Monitor:
                     {
                     'Name': 'InstanceId',
                     'Value': instance_id
-                    },
+                    }
                 ]
             )
-        
-            print('\t EC2 CPU  Credit Usage: ', CPUCreditUsage['Datapoints'][0]['Average'], '%')
-            print('\t EC2 CPU Utilization', CPUUtilization['Datapoints'][0]['Average'], '%')
+
+            cpuCreditUsage = CPUCreditUsage['Datapoints'][0]['Average']
+            cpuUtilization = CPUUtilization['Datapoints'][0]['Average']
+
+            print(f'\t EC2 CPU  Credit Usage: {cpuCreditUsage}%')
+            print(f'\t EC2 CPU Utilization {cpuUtilization}%')
 
             print('-'*60)
 
@@ -64,7 +67,7 @@ class Monitor:
             handleError(error)
 
     def setAlarm(self):
-        print(f'EC2 CPU (last 30 min) information')
+        print('EC2 CPU (last 30 min) information')
 
         try:
             EC2(self.user).list_instances()
@@ -80,12 +83,12 @@ class Monitor:
                 Statistic='Average',
                 Threshold=45.0,
                 ActionsEnabled=False,
-                AlarmDescription='Alarm when server CPU exceeds 70%',
+                AlarmDescription='Alarm when server CPU exceeds 45%',
                 Dimensions=[
                     {
                     'Name': 'InstanceId',
                     'Value': instance_id
-                    },
+                    }
                 ],
                 Unit='Seconds'
             )

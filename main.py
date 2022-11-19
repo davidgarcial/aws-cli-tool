@@ -30,31 +30,29 @@ class Main:
         print('\t 5.-Exit')
 
         menuOption = int(input("Select an option: "))
+        
+        clear(0)
 
         match menuOption:
             case 1:
-                clear()
                 self.ec2 = EC2(self.user)
                 self.ec2Menu()
             case 2:
-                clear()
                 self.ebs = EBS(self.user)
                 self.ebsMenu()
             case 4:
                 if not self.isAdmin():
                     clear(0)
                     self.generalMenu()
-                clear()
+                    
                 self.s3 = S3(self.user)
                 self.s3Menu()
             case 3:
-                clear()
                 self.monitor = Monitor(self.user)
                 self.monitorMenu()
             case 5:
                 quit()
             case _:
-                clear(0)
                 self.generalMenu()
 
     def ec2Menu(self):
@@ -92,8 +90,8 @@ class Main:
 
                 self.ec2.deleteAmi()
             case 6:
-                self.generalMenu()
                 clear(0)
+                self.generalMenu()
                 return
             case 7:
                 quit()
@@ -148,8 +146,8 @@ class Main:
                     self.ebsMenu()
                 self.ebs.createVolumeFromSnapshot()
             case 8:
-                self.generalMenu()
                 clear(0)
+                self.generalMenu()
                 return
             case 9:
                 quit()
@@ -186,8 +184,8 @@ class Main:
             case 5:
                 self.s3.delete_bucket()
             case 6:
-                self.generalMenu()
                 clear(0)
+                self.generalMenu()
                 return
             case 7:
                 quit()
@@ -217,8 +215,8 @@ class Main:
                 clear()
                 self.monitorMenu()
             case 3:
-                self.generalMenu()
                 clear(0)
+                self.generalMenu()
                 return
             case 4:
                 quit()

@@ -1,13 +1,12 @@
 from ec2 import EC2
-from aws_service import AWSService
+from aws_service import getEC2Client, getEC2Resource
 from utils import handleError
 
 class EBS: 
     def __init__(self, user):
-        aws_Service = AWSService()
         self.user = user
-        self.ebs = aws_Service.getEC2Resource(user)
-        self.ebs_client = aws_Service.getEC2Client(user)
+        self.ebs = getEC2Resource(user)
+        self.ebs_client = getEC2Client(user)
 
     def getAllVolumes(self):
         print(f'EBS all volumes information:')

@@ -1,17 +1,20 @@
 import os
 
 from botocore.exceptions import ClientError
-from aws_service import AWSService
+from aws_service import getS3Client, getS3Resource
 from utils import handleError
 
 class S3: 
     def __init__(self, user):
-        aws_Service = AWSService()
-        self.s3_resource = aws_Service.getS3Resource(user)
-        self.s3_client = aws_Service.getEC2Client(user)
+        self.s3_resource = getS3Resource(user)
+        self.s3_client = getS3Client(user)
 
     def bucketDetails(self):
         bucket = self.selectBucket()
+
+        if not bucket:
+            return
+
         objects = self.s3_client.list_objects_v2(Bucket=bucket)
 
         print('-'*60)
@@ -49,8 +52,14 @@ class S3:
         
         bucket = self.selectBucket()
 
+        if not bucket:
+            return
+
         file_name = input("Provide a file name: ")
         object_name = input("Provide a obj name: ")
+
+        if not file_name:
+            return
 
         if object_name is None:
             object_name = os.path.basename(file_name)
@@ -68,6 +77,15 @@ class S3:
         object = input("Provide an objects name: ")
         name = input("Provide a name to store the file: ")
 
+        if not bucket:
+            return
+            
+        if not object:
+            return
+
+        if not name:
+            return
+
         try:
             self.s3_client.download_file(bucket, object, name)
             print(f'File downloaded successfully')
@@ -79,6 +97,12 @@ class S3:
 
         bucket = self.bucketDetails()
         object = input("Provide an objects name: ")
+
+        if not object:
+            return
+
+        if not bucket:
+            return
 
         try:
             self.s3_client.delete_object(Bucket=bucket, Key=object)
@@ -92,6 +116,9 @@ class S3:
         self.getAllBuckets()
             
         bucketName = input("Provide a bucket name: ")
+
+        if not bucketName:
+            return
         
         s3_bucket = self.s3_resource.Bucket(bucketName)
         objects = self.s3_client.list_objects_v2(Bucket=bucketName)

@@ -40,16 +40,18 @@ class LoginStore:
         print('Registered Users Are:')
         with open('passwords.txt', 'r+') as f:
             for line in f:
-                dataSplited = line.split(tab)
-                self.users.append(User(dataSplited[0], dataSplited[1], dataSplited[2], dataSplited[3], dataSplited[4]))
-                print('\t | ' + dataSplited[0])
+                data = line.split(tab)
+                self.users.append(User(data[0], data[1], data[2], data[3], data[4], data[5] ))
+                print('\t | ' + data[0])
             f.close()
 
     def fileEmptyOrNull(self):
-        if not os.path.exists("password.txt"):
+        if not os.path.exists("passwords.txt"):
+            print("t")
             return True
 
         if os.stat('passwords.txt').st_size == 0:
+            print("f")
             return True
 
         return False
