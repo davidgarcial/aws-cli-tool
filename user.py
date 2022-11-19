@@ -3,13 +3,13 @@ class User:
     pwd = ""
     accessKey = ""
     secretAccessKey = ""
-    region_name = "us-east-2"
+    region = ""
     userType = ""
 
-    def __init__(self, name, pwd, accessKey, secretAccessKey, userType):
+    def __init__(self, name, pwd, accessKey, secretAccessKey, region, userType):
         self.name = name
         self.pwd = pwd
         self.accessKey = accessKey
         self.secretAccessKey = secretAccessKey
         self.userType = userType
-        self.region_name = "us-east-2"
+        self.region = region

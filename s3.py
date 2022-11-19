@@ -1,22 +1,13 @@
-import boto3
 import os
+
 from botocore.exceptions import ClientError
+from aws_service import AWSService
 
 class S3: 
     def __init__(self, user):
-        self.s3_resource = boto3.resource(
-            "s3", 
-            aws_access_key_id = user.accessKey,
-            aws_secret_access_key= user.secretAccessKey,
-            region_name = user.region_name
-        )
-
-        self.s3_client = boto3.client(
-            "s3", 
-            aws_access_key_id = user.accessKey,
-            aws_secret_access_key= user.secretAccessKey,
-            region_name = user.region_name
-        )
+        aws_Service = AWSService()
+        self.s3_resource = aws_Service.getS3Resource(user)
+        self.s3_client = aws_Service.getEC2Client(user)
 
     def bucketDetails(self):
         bucket = self.selectBucket()

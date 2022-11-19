@@ -8,7 +8,7 @@ from clear import clear
 class Main:
     def __init__(self):
         self.Login = Login()
-        self.user = self.Login.login_check()
+        self.user = self.Login.main()
 
         if self.user:
             print("Login successful!!")

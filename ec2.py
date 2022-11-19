@@ -1,20 +1,10 @@
-import boto3
+from aws_service import AWSService
 
 class EC2: 
     def __init__(self, user):
-        self.ec2 = boto3.client(
-            "ec2", 
-            aws_access_key_id = user.accessKey,
-            aws_secret_access_key= user.secretAccessKey,
-            region_name = user.region_name
-        )
-
-        self.ec2_resource = boto3.resource(
-            "ec2", 
-            aws_access_key_id = user.accessKey,
-            aws_secret_access_key= user.secretAccessKey,
-            region_name = user.region_name
-        )
+        aws_Service = AWSService()
+        self.ec2_resource = aws_Service.getEC2Resource(user)
+        self.ec2_client = aws_Service.getEC2Client(user)
     
     def printInstance(self, instanceInfo):
         print(f'\t EC2 instance "{instanceInfo["Tags"][0]["Value"]}" information:')
@@ -26,7 +16,7 @@ class EC2:
         print('-'*60)
 
     def list_instances(self):
-        instances = self.ec2.describe_instances()
+        instances = self.ec2_client.describe_instances()
 
         print(f'EC2 Running instances information:')
         print('-'*60)
@@ -47,8 +37,8 @@ class EC2:
         
         if action == 'ON':
             try:
-                self.ec2.start_instances(InstanceIds=[instance_id])
-                waiter = self.ec2.get_waiter('instance_running')
+                self.ec2_client.start_instances(InstanceIds=[instance_id])
+                waiter = self.ec2_client.get_waiter('instance_running')
                 waiter.wait(InstanceIds=[instance_id])
                 print(f'EC2 ', instance_id, " was started")
             except Exception as e:
@@ -56,7 +46,7 @@ class EC2:
                 print(f'Something goes wrong try again')
         else:
             try:
-                self.ec2.stop_instances(InstanceIds=[instance_id])
+                self.ec2_client.stop_instances(InstanceIds=[instance_id])
                 print(f'EC2 ', instance_id, " was stopped")
             except Exception as e:
                 print(e)
@@ -69,7 +59,7 @@ class EC2:
         name = input("Provide a name: ")
 
         try:
-            self.ec2.create_image(InstanceId=instance_id, Name=name)
+            self.ec2_client.create_image(InstanceId=instance_id, Name=name)
         except Exception as e:
             print(e)
             print(f'Something goes wrong try again')
@@ -78,7 +68,7 @@ class EC2:
 
     def deleteAmi(self):
         print(f'\t Delete AMI from instance')
-        images = self.ec2.describe_images(Owners=['self'])
+        images = self.ec2_client.describe_images(Owners=['self'])
         
         for image in images['Images']:
             print('\t \t | ', image['ImageId'])
@@ -89,7 +79,7 @@ class EC2:
             return
 
         try:
-            res = self.ec2.deregister_image(ImageId=image_id)
+            res = self.ec2_client.deregister_image(ImageId=image_id)
         
             if res['ResponseMetadata']['HTTPStatusCode'] == 200:
                 print(f'AMI deleted successfully')

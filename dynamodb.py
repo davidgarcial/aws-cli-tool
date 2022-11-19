@@ -17,7 +17,7 @@ class AmazonDB():
             "dynamodb",
             aws_access_key_id = "",
             aws_secret_access_key= "",
-            region_name = "us-east-2"
+            region = "us-east-2"
         )
 
     def getTable(self, tableName):

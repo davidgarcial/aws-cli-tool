@@ -1,22 +1,12 @@
-import boto3
 from ec2 import EC2
+from aws_service import AWSService
 
 class EBS: 
     def __init__(self, user):
+        aws_Service = AWSService()
         self.user = user
-        self.ebs = boto3.resource(
-            "ec2",
-            aws_access_key_id = user.accessKey,
-            aws_secret_access_key= user.secretAccessKey,
-            region_name = user.region_name
-        )
-
-        self.ebs_client = boto3.client(
-            "ec2", 
-            aws_access_key_id = user.accessKey,
-            aws_secret_access_key= user.secretAccessKey,
-            region_name = user.region_name
-        )
+        self.ebs = aws_Service.getEC2Resource(user)
+        self.ebs_client = aws_Service.getEC2Client(user)
 
     def getAllVolumes(self):
         print(f'EBS all volumes information:')

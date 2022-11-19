@@ -1,16 +1,12 @@
-import boto3
 from datetime import datetime, timedelta
 from ec2 import EC2
+from aws_service import AWSService
 
 class Monitor: 
     def __init__(self, user):
+        aws_Service = AWSService()
         self.user = user
-        self.cloudwatch = boto3.client(
-            "cloudwatch", 
-            aws_access_key_id = user.accessKey,
-            aws_secret_access_key= user.secretAccessKey,
-            region_name = user.region_name
-        )
+        self.cloudwatch = aws_Service.getCloudWatchClient(user)
 
     def cpuData(self):
         print(f'EC2 CPU (last 30 min) information')
