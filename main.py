@@ -3,21 +3,20 @@ from ec2 import EC2
 from s3 import S3
 from ebs import EBS
 from monitor import Monitor
-from clear import clear
+from utils import clear
 
 class Main:
     def __init__(self):
-        self.Login = Login()
-        self.user = self.Login.main()
+        # Here the app gonna initialize the login class and call the main function
+        # Must return a valid user, if not gonna handle it
+        self.user = Login().main()
 
         if self.user:
             print("Login successful!!")
-            clear(2)
-            self.ec2 = EC2(self.user)
-            self.ebs = EBS(self.user)
-            self.s3 = S3(self.user)
-            self.monitor = Monitor(self.user)
+            clear()
             self.generalMenu()
+        else:
+            quit()
 
     def generalMenu(self):
         print("AWS Manager")
@@ -34,19 +33,23 @@ class Main:
 
         match menuOption:
             case 1:
-                clear(2)
+                clear()
+                self.ec2 = EC2(self.user)
                 self.ec2Menu()
             case 2:
-                clear(2)
+                clear()
+                self.ebs = EBS(self.user)
                 self.ebsMenu()
             case 4:
                 if not self.isAdmin():
                     clear(0)
                     self.generalMenu()
-                clear(2)
+                clear()
+                self.s3 = S3(self.user)
                 self.s3Menu()
             case 3:
-                clear(2)
+                clear()
+                self.monitor = Monitor(self.user)
                 self.monitorMenu()
             case 5:
                 quit()
@@ -72,7 +75,7 @@ class Main:
         match option:
             case 1:
                 self.ec2.list_instances()
-                clear(2)
+                clear()
                 self.ec2Menu()
             case 2:
                 self.ec2.list_instances()
@@ -98,7 +101,7 @@ class Main:
                 clear(0)
                 self.ec2Menu()
 
-        clear(2)
+        clear()
         self.ec2Menu()
 
     def ebsMenu(self):
@@ -121,7 +124,7 @@ class Main:
         match option:
             case 1:
                 self.ebs.getAllVolumes()
-                clear(2)
+                clear()
                 self.ebsMenu()
             case 2:
                 self.ebs.attachVolume()
@@ -154,7 +157,7 @@ class Main:
                 clear(0)
                 self.ebsMenu()
 
-        clear(2)
+        clear()
         self.ebsMenu()
 
     def s3Menu(self):
@@ -172,7 +175,7 @@ class Main:
         match option:
             case 1:
                 self.s3.bucketDetails()
-                clear(2)
+                clear()
                 self.s3Menu()
             case 2:
                 self.s3.upload_file()
@@ -192,7 +195,7 @@ class Main:
                 clear(0)
                 self.s3Menu()
 
-        clear(2)
+        clear()
         self.s3Menu()
 
     def monitorMenu(self):
@@ -207,11 +210,11 @@ class Main:
         match option:
             case 1:
                 self.monitor.cpuData()
-                clear(2)
+                clear()
                 self.monitorMenu()
             case 2:
                 self.monitor.setAlarm()
-                clear(2)
+                clear()
                 self.monitorMenu()
             case 3:
                 self.generalMenu()
@@ -223,7 +226,7 @@ class Main:
                 clear(0)
                 self.monitorMenu()
 
-        clear(2)
+        clear()
         self.monitorMenu()
 
     def isAdmin(self):

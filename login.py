@@ -1,7 +1,10 @@
-from clear import clear
-from user import User
 import os
 
+from user import User
+from utils import clear
+
+# This variable was created to just call a define var insted of write the tab each time
+# For some reason \t was not working saving the text file
 tab = '   '
 
 class LoginStore:
@@ -20,7 +23,7 @@ class LoginStore:
         self.users.append(User(username, password, accessKey, secretAccessKey, region, userType))
 
         print('Done. Try to login.')
-        clear(2)
+        clear()
 
     def check_user(self, username, password):
         for user in self.users:

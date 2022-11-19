@@ -1,4 +1,5 @@
 from aws_service import AWSService
+from utils import handleError
 
 class EC2: 
     def __init__(self, user):
@@ -60,9 +61,8 @@ class EC2:
 
         try:
             self.ec2_client.create_image(InstanceId=instance_id, Name=name)
-        except Exception as e:
-            print(e)
-            print(f'Something goes wrong try again')
+        except Exception as error:
+            handleError(error)
 
         print(f'AMI created successfully')
 
@@ -84,7 +84,6 @@ class EC2:
             if res['ResponseMetadata']['HTTPStatusCode'] == 200:
                 print(f'AMI deleted successfully')
         
-        except Exception as e:
-            print(e)
-            print(f'Something goes wrong try again')
+        except Exception as error:
+            handleError(error)
             

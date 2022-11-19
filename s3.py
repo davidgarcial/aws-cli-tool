@@ -2,6 +2,7 @@ import os
 
 from botocore.exceptions import ClientError
 from aws_service import AWSService
+from utils import handleError
 
 class S3: 
     def __init__(self, user):
@@ -70,9 +71,8 @@ class S3:
         try:
             self.s3_client.download_file(bucket, object, name)
             print(f'File downloaded successfully')
-        except Exception as e:
-            print(e)
-            print(f'Something goes wrong try again')
+        except Exception as error:
+            handleError(error)
 
     def delete_file(self):
         print(f'Delete a file  from a S3 bucket')
@@ -83,9 +83,8 @@ class S3:
         try:
             self.s3_client.delete_object(Bucket=bucket, Key=object)
             print(f'File deleted successfully')
-        except Exception as e:
-            print(e)
-            print(f'Something goes wrong try again')
+        except Exception as error:
+            handleError(error)
 
     def delete_bucket(self):
         print(f'Delete a S3 bucket')
@@ -108,6 +107,5 @@ class S3:
             s3_bucket.delete()
             
             print(f'Bucket deleted successfully')
-        except Exception as e:
-            print(e)
-            print(f'Something goes wrong try again')
+        except Exception as error:
+            handleError(error)

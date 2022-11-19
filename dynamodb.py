@@ -84,11 +84,6 @@ class AmazonDB():
                     'id': id,
                     'name': name
                 }
-                # Conditional request
-                #ConditionExpression="info.info_timestamp <= :value",
-                #ExpressionAttributeValues={
-                #    ":value": info_timestamp
-                #}
             )
         except ClientError as er:
             if er.response['Error']['Code'] == "ConditionalCheckFailedException":
@@ -103,10 +98,13 @@ class AmazonDB():
         table.delete()
 
     def main(self):
+        # First, we gonna create a new table called testTable
         self.createTable("testTable")
 
+        # Just to confirm, let's make a get of the recently created table
         table = self.getTable("testTable")
         
+        #Lets gonna add a record and make a get over the table
         print(self.loadData("testTable", "1", "testSampleData"))
         print(self.getItem(table, "1", "testSampleData"))
 
